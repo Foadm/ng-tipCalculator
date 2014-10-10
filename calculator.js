@@ -9,13 +9,6 @@ angular.module('tipCalculator', [])
             $scope.price = null;
             $scope.taxRate = null;
             $scope.tipPercentage = null;
-            //probably need to broadcast this
-            $scope.customer.subtotal = 0;
-            $scope.customer.tip = 0;
-            $scope.customer.total = 0;
-            $scope.server.mealCount = 0;
-            $scope.server.tipTotal = 0;
-            $scope.server.total = 0;
             $scope.sendData($scope.customer,$scope.server);
         };
         $scope.customer = {
@@ -28,6 +21,8 @@ angular.module('tipCalculator', [])
             tipTotal : 0,
             average : 0
         };
+        //would be better if the following logic is not inside the submit?
+        //would it be better to use $watch in this case?
         $scope.submit = function(){
             $scope.customer.subtotal = $scope.price + ($scope.price * $scope.taxRate) / 100;
             $scope.customer.tip = ($scope.price * $scope.tipPercentage) / 100;
@@ -42,14 +37,12 @@ angular.module('tipCalculator', [])
         };
         $scope.sendData = function(serverData, customerData){
             $rootScope.$broadcast('newData',serverData ,customerData);
-            console.log(serverData);
         };
         //is it better to keep this outside the controller and within module?
         $scope.init();
     })
     .controller('DisplayDataCtrl',function($scope, $rootScope){
         $scope.$on('newData', function(event,serverData ,customerData){
-            console.log(serverData);
             $scope.subtotal = customerData.subtotal;
             $scope.tip = customerData.tip;
             $scope.total = customerData.total;
