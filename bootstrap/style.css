@@ -1,0 +1,13 @@
+.main-wrapper{width:800px; margin:0 auto;}
+.details{border:3px solid #101010;}
+.charges{border:3px solid #101010;}
+.info{border:3px solid #101010;}
+form{margin-bottom: 25px;}
+.reset{position: absolute;
+    bottom: -40px;
+    left: -70px;
+}
+.info{
+    margin-top: 16px;
+}
+.errors{color:red;}

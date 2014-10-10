@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Tip Calculator</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script type="text/javascript" src="calculator.js"></script>
+</head>
+<body ng-app="tipCalculator">
+    <h1 class="text-center">Waitstaff Calculator</h1>
+    <div class="row main-wrapper">
+        <div class="col-md-6 details" ng-controller="InputCtrl">
+            <h3>Enter the Meal Details</h3>
+            <form name="initialInputs" ng-submit="submit(); submitted = true;" novalidate>
+                <div class="form-group">
+                    <lable for="mealPrice">Base Meal Price <strong>$</strong></lable>
+                    <input type="number" ng-model="price" class="form-control" placeholder="Enter price" name="mealPrice" ng-minlength="1" required/>
+                    <h6 class="errors" ng-show="submitted && initialInputs.mealPrice.$invalid">* You must enter a number greater than 0</h6>
+                </div>
+                <div class="form-group">
+                    <lable for="taxRate">Tax Rate <strong>%</strong></lable>
+                    <input type="number" ng-model="taxRate" class="form-control" placeholder="Enter price" name="taxRate" ng-minlength="0" ng-maxlength="100" required/>
+                    <h6 class="errors" ng-show="submitted && initialInputs.taxRate.$invalid">* You must enter a number between 0 and 100</h6>
+                </div>
+                <div class="form-group">
+                    <lable for="tip">Tip Percentage <strong>$</strong></lable>
+                    <input type="number" ng-model="tipPercentage" class="form-control" placeholder="Enter price" name="tip" ng-minlength="0" ng-maxlength="100" required/>
+                    <h6 class="errors" ng-show="submitted && initialInputs.tip.$invalid">* You must enter a number between 0 and 100</h6>
+                </div>
+                <div class="text-center">
+                    <button class="btn-primary" type="submit">Submit</button>
+                    <button class="btn-default" type="reset">Cancel</button>
+                </div>
+            </form>
+            <div class="reset">
+                <div class="col-md-1 pull-right">
+                    <button ng-click="init()" submitted = false; >Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-controller="DisplayDataCtrl">
+            <div class="col-md-12 charges">
+                <h3>Customer Charges</h3>
+                <p>Subtotal  {{subtotal | number:2 }}</p>
+                <p>Tip  {{tip | number:2 }}</p>
+                <p>Total  {{total | number:2 }}</p>
+            </div>
+            <div class="col-md-12 info">
+                <h3>Customer Charges</h3>
+                <p>Tip Total  {{tipTotal | number:2 }}</p>
+                <p>Avg tip per meal  {{average | number:2 }}</p>
+                <p>Meal Count  {{mealCount | number:2 }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
