@@ -2,7 +2,20 @@
  * Created by mozafff on 10/9/2014.
  */
 
-angular.module('tipCalculator', [])
+angular.module('tipCalculator', ['ngRoute'])
+    .config(function($routeProvider){
+        $routeProvider.when('/', {
+            templateUrl : './home.html'
+        })
+            .when('/new-meal', {
+                templateUrl : './meal.html',
+                controller : 'InputCtrl'
+            })
+            .when('/my-earnings', {
+                templateUrl : './earning.html',
+                controller : 'DisplayDataCtrl'
+            });
+    })
     .controller('InputCtrl',function($scope,$rootScope){
         // this function resets app to initial state
         $scope.init = function(){
@@ -32,20 +45,18 @@ angular.module('tipCalculator', [])
             $scope.server.tipTotal = $scope.customer.tip + $scope.server.tipTotal;
             $scope.server.average = $scope.server.average + ($scope.server.tipTotal / $scope.server.mealCount);
             //broadcast : should these be seperated into two broadcast calls for each controller?
-            $scope.sendData($scope.server, $scope.customer);
+
+            $scope.sendData($scope.server);
             $scope.test= true;
         };
-        $scope.sendData = function(serverData, customerData){
-            $rootScope.$broadcast('newData',serverData ,customerData);
+        $scope.sendData = function(serverData){
+            $rootScope.$broadcast('newData',serverData);
         };
-        //is it better to keep this outside the controller and within module?
         $scope.init();
     })
-    .controller('DisplayDataCtrl',function($scope, $rootScope){
-        $scope.$on('newData', function(event,serverData ,customerData){
-            $scope.subtotal = customerData.subtotal;
-            $scope.tip = customerData.tip;
-            $scope.total = customerData.total;
+    .controller('DisplayDataCtrl',function($scope){
+        $scope.$on('newData', function(event,serverData){
+            console.log('broadcast called');
             $scope.mealCount = serverData.mealCount;
             $scope.tipTotal = serverData.tipTotal;
             $scope.average = serverData.average;
